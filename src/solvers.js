@@ -36,43 +36,100 @@ window.countNRooksSolutions = function(n) {
 
   var solutionCount = 0;
   var storage = {};
-  // create a matrix
-  var newBoard = new Board({n: n});
-  // create a new board
-  var matrix = newBoard.rows();
 
-  // add a third for loop for other cases
+  for (var i = 0; i < Math.ceil(n / 2); i++) {
+    for (var j = 0; j < n; j++) {
+      // create a matrix
+      var newBoard = new Board({n: n});
+      // create a new board
+      var matrix = newBoard.rows();
+      matrix[i][j] = 1;
 
-  // number of set pieces
-  var setPieces = 0;
-  // iterate over rows
-  for (var row = 0; row < matrix.length; row++) {
-    // iterate over columns
-    for (var col = 0; col < matrix.length; col++) {
-      // place a 1 here
-      matrix[row][col] = 1;
-      setPieces++;
+      // number of set pieces
+      var setPieces = 0;
+      // iterate over rows
+      for (var row = 0; row < matrix.length; row++) {
+        // iterate over columns
+        for (var col = 0; col < matrix.length; col++) {
+          // place a 1 here
+          matrix[row][col] = 1;
+          setPieces++;
 
-      // if row or conflict are true, can skip current (rest of) row or column
+          // if row or conflict are true, can skip current (rest of) row or column
 
-      // if current position passes both rows and cols conflict checks
-      if (newBoard.hasRowConflictAt(row) || newBoard.hasColConflictAt(col)) {
-        matrix[row][col] = 0;
-        setPieces--;
+          // if current position passes both rows and cols conflict checks
+          if (newBoard.hasRowConflictAt(row) || newBoard.hasColConflictAt(col)) {
+            matrix[row][col] = 0;
+            setPieces--;
+          }
+        }
+      }
+
+      // console.log('set pieces are:', setPieces);
+      if (setPieces === n) {
+        // console.log('matrix before adding a copy to storage', matrix);
+        var storageKey = JSON.stringify(matrix);
+        // console.log('array key', storageKey);
+        if (storage[storageKey] === undefined) {
+          solutionCount++;
+          storage[storageKey] = true;
+        }
+      }
+    }
+    console.log('set pieces are:', setPieces);
+    if (setPieces === n) {
+      console.log('matrix before adding a copy to storage', matrix);
+      var storageKey = JSON.stringify(matrix);
+      console.log('array key', storageKey);
+      if (storage[storageKey] === undefined) {
+        solutionCount++;
+        storage[storageKey] = true;
       }
     }
   }
 
-  console.log('matrix before setting key', matrix);
-  if (setPieces === 4) {
-    var storageKey = JSON.stringify(matrix);
-    if (storage[storageKey] === undefined) {
-      solutionCount++;
-      storage[storageKey] = true;
-    }
-  }
+  for (var i = 0; i < Math.ceil(n / 2); i++) {
+    for (var j = 0; j < n; j++) {
+      // debugger;
+      // create a matrix
+      var newBoard = new Board({n: n});
+      // create a new board
+      var matrix = newBoard.rows();
+      matrix[n - 1][j] = 1;
 
-  console.log(storage, '==============');
+      // number of set pieces
+      var setPieces = 0;
+      // iterate over rows
+      for (var row = 0; row < matrix.length; row++) {
+        // iterate over columns
+        for (var col = n - 1; col >= 0; col--) {
+          // place a 1 here
+          matrix[row][col] = 1;
+          setPieces++;
+
+          // if row or conflict are true, can skip current (rest of) row or column
+
+          // if current position passes both rows and cols conflict checks
+          if (newBoard.hasRowConflictAt(row) || newBoard.hasColConflictAt(col)) {
+            matrix[row][col] = 0;
+            setPieces--;
+          }
+        }
+      }
+
+      console.log('set pieces are:', setPieces);
+      if (setPieces === n) {
+        console.log('matrix before adding a copy to storage', matrix);
+        var storageKey = JSON.stringify(matrix);
+        console.log('array key', storageKey);
+        if (storage[storageKey] === undefined) {
+          solutionCount++;
+          storage[storageKey] = true;
+        }
+      }
+
+  }
+  }
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
@@ -93,3 +150,76 @@ window.countNQueensSolutions = function(n) {
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
+
+
+
+
+// backup:
+// window.findNRooksSolution = function(n) {
+
+//   var solution = new Board({n: n});
+
+//   var matrix = solution.rows();
+
+//   var placingIndex = 0;
+
+//   for (var row = 0; row < matrix.length; row++) {
+//     matrix[row][placingIndex] = 1;
+//     placingIndex++;
+//   }
+
+//   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+//   return matrix;
+// };
+
+// // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
+// window.countNRooksSolutions = function(n) {
+//   //to refactor consider an array of colum and row indexes that you can keep track of the ones we've visited. .contains or .includes
+
+//   var solutionCount = 0;
+//   var storage = {};
+
+//   for (var i = 0; i < n; i++) {
+//     for (var j = 0; j < n; j++) {
+//       // create a matrix
+//       var newBoard = new Board({n: n});
+//       // create a new board
+//       var matrix = newBoard.rows();
+//       matrix[i][j] = 1;
+
+//       // number of set pieces
+//       var setPieces = 0;
+//       // iterate over rows
+//       for (var row = 0; row < matrix.length; row++) {
+//         // iterate over columns
+//         for (var col = 0; col < matrix.length; col++) {
+//           // place a 1 here
+//           matrix[row][col] = 1;
+//           setPieces++;
+
+//           // if row or conflict are true, can skip current (rest of) row or column
+
+//           // if current position passes both rows and cols conflict checks
+//           if (newBoard.hasRowConflictAt(row) || newBoard.hasColConflictAt(col)) {
+//             matrix[row][col] = 0;
+//             setPieces--;
+//           }
+//         }
+//       }
+
+//       console.log('set pieces are:', setPieces);
+//       if (setPieces === n) {
+//         console.log('matrix before adding a copy to storage', matrix);
+//         var storageKey = JSON.stringify(matrix);
+//         console.log('array key', storageKey);
+//         if (storage[storageKey] === undefined) {
+//           solutionCount++;
+//           storage[storageKey] = true;
+//         }
+//       }
+//     }
+//   }
+
+//   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
+//   return solutionCount;
+// };
