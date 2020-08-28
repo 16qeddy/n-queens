@@ -78,6 +78,8 @@
     // --------------------------------------------------------------
     //
     // test if a specific row on this board contains a conflict
+
+    // O(n)
     hasRowConflictAt: function(rowIndex) {
 
       var sum = 0;
@@ -88,6 +90,7 @@
 
     },
 
+    // O(n^2)
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
       var matrix = this.rows();
@@ -105,6 +108,8 @@
     // --------------------------------------------------------------
     //
     // test if a specific column on this board contains a conflict
+
+    // O(n)
     hasColConflictAt: function(colIndex) {
       var matrix = this.rows();
       var sum = 0;
@@ -114,6 +119,7 @@
       return sum > 1;
     },
 
+    //O (n^2)
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
       var matrix = this.rows();
@@ -131,6 +137,8 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
+
+    // O(n^2)
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
       var matrix = this.rows();
       var sum = 0;
@@ -145,6 +153,8 @@
     },
 
     // test if any major diagonals on this board contain conflicts
+
+    // ~O(n^3)
     hasAnyMajorDiagonalConflicts: function() {
 
       var matrix = this.rows();
@@ -169,6 +179,8 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
+
+    // O(n^2)
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
       var matrix = this.rows();
       var sum = 0;
@@ -183,6 +195,7 @@
     },
 
     // // test if any minor diagonals on this board contain conflicts
+    // ~O(n^3)
     hasAnyMinorDiagonalConflicts: function() {
       var matrix = this.rows();
 
